@@ -1,0 +1,28 @@
+body{
+    background-color: #0000ff;
+}
+
+#screen{
+    width: 500px;
+    height: 500px;
+    background-color: #000000;
+    margin: auto;
+    margin-top: 30px;
+    border: 1px solid #ffffff;
+}
+
+button{
+    color: #555555;
+    background-color: #000000;
+    border: 1px solid #777777;
+    font-size: 28px;
+    font-weight: 800;
+    display: block;
+    margin: auto;
+    margin-top: 300px;
+}
+
+button:hover{
+    color: #999999;
+    border-color: #999999;
+}
