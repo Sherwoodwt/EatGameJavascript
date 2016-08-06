@@ -1,5 +1,4 @@
 # EatGameJavascript
-<h1>Eat Game</h1>
 <ul>
   <li>Project: Eat Game</li>
   <li>Author: Trevor Sherwood</li>
