@@ -78,15 +78,20 @@ $(document).ready(function(){
     function createPlayer(){
         var guy = new Person(250, 250, 10, 0, 0, "#ff0000");
         guy.buttons = buttonManager;
+        guy.maxSpeed = 10;
         guy.updateSpeeds = function(){
-            if(this.buttons.pressed[0])
+            if(this.buttons.pressed[0] && this.xSpeed > this.maxSpeed * -1){
                 this.xSpeed--;
-            if(this.buttons.pressed[1])
+            }
+            if(this.buttons.pressed[1] && this.ySpeed > this.maxSpeed * -1){
                 this.ySpeed--;
-            if(this.buttons.pressed[2])
+            }
+            if(this.buttons.pressed[2] && this.xSpeed < this.maxSpeed){
                 this.xSpeed++;
-            if(this.buttons.pressed[3])
+            }
+            if(this.buttons.pressed[3] && this.ySpeed < this.maxSpeed){
                 this.ySpeed++;;
+            }
         }
         return guy;
     }
