@@ -36,11 +36,10 @@ $(document).ready(function(){
             var en = this.enemies;
             for(var i = 0; i < en.length; i++){
                 en[i].update();
+                checkCollide(en[i], this.guy);
                 if(!en[i].alive){
                     en[i] = "deleted";
-            }
-                //if(en[i] !== "deleted")
-                    //en[i].checkCollide();
+                }
             }
             var list = [];
             var j = 0;
@@ -65,7 +64,7 @@ $(document).ready(function(){
             this.context.fillText("PAUSED", 200, 200);
         },
         generateEnemies: function(){
-            if(this.enemies.length < 10){
+            if(this.enemies.length < 15){
                 var side = Math.floor(Math.random() * 4);
                 var position = Math.floor(Math.random() * this.canvas.width);
                 var size = Math.floor(Math.random() * 42 + 8);
@@ -87,6 +86,20 @@ $(document).ready(function(){
             }
         }
     };
+
+    function checkCollide(enemy, hero){
+        if(enemy.x < hero.x+hero.size &&
+        enemy.x+enemy.size > hero.x &&
+        enemy.y < hero.y+hero.size &&
+        enemy.y+enemy.size > hero.y){
+            if(enemy.size >= hero.size){
+                hero.alive = false;
+            } else {
+                enemy.alive = false;
+                hero.size++;
+            }
+        }
+    }
     
 
     //Generic Person
@@ -100,22 +113,26 @@ $(document).ready(function(){
             color: color,
             alive: true,
             update: function(){
-                this.x += this.xSpeed;
-                if(this.x > game.canvas.width){
-                    this.x = 0;
-                } else if(this.x < 0){
-                    this.x = game.canvas.width;
-                }
-                this.y += this.ySpeed;
-                if(this.y > game.canvas.height){
-                    this.y = 0;
-                } else if(this.y < 0){
-                    this.y = game.canvas.height;
+                if(this.alive){
+                    this.x += this.xSpeed;
+                    if(this.x > game.canvas.width){
+                        this.x = 0;
+                    } else if(this.x < 0){
+                        this.x = game.canvas.width;
+                    }
+                    this.y += this.ySpeed;
+                    if(this.y > game.canvas.height){
+                        this.y = 0;
+                    } else if(this.y < 0){
+                        this.y = game.canvas.height;
+                    }
                 }
             },
             draw: function(context){
-                context.fillStyle = this.color;
-                context.fillRect(this.x, this.y, this.size, this.size);
+                if(this.alive){
+                    context.fillStyle = this.color;
+                    context.fillRect(this.x, this.y, this.size, this.size);
+                }
             }
         };
     }
