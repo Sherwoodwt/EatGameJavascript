@@ -1,4 +1,6 @@
 $(document).ready(function(){
+    var paused = false;
+
 
     //Key Handling
     var buttonManager = {
@@ -34,6 +36,11 @@ $(document).ready(function(){
         },
         draw: function(){
             this.guy.draw(this.context);
+        },
+        drawPaused: function(){
+            this.context.font = "30px Ariel";
+            this.context.color = "#ffffff";
+            this.context.fillText("PAUSED", 200, 200);
         }
     };
     
@@ -67,6 +74,8 @@ $(document).ready(function(){
     }
 
     $(document).keydown(function(event){
+        if(event.which === 27)
+            paused = !paused;
         game.guy.buttons.press(event.which);
     });
 
@@ -119,9 +128,14 @@ $(document).ready(function(){
         $("#start").remove();
         game.start();
         setInterval(function(){
-            game.clear();
-            game.update();
-            game.draw();
+            if(!paused){
+                game.clear();
+                game.update();
+                game.draw();
+            } else{
+                game.clear();
+                game.drawPaused();
+            }
         }, 30);
     });
 });
