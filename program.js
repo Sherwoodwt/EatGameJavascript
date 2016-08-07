@@ -98,6 +98,7 @@ $(document).ready(function(){
             xSpeed: xSpeed,
             ySpeed: ySpeed,
             color: color,
+            alive: true,
             update: function(){
                 this.x += this.xSpeed;
                 if(this.x > game.canvas.width){
@@ -132,7 +133,6 @@ $(document).ready(function(){
     //returns object with references to Person but specific update method and alive param
     function Enemy(x, y, size, xSpeed, ySpeed, color){
         var person = Person(x, y, size, xSpeed, ySpeed, color);
-        person.alive = true;
         person.update = function(){
             this.x += this.xSpeed;
             if(this.x > game.canvas.width){
@@ -194,16 +194,20 @@ $(document).ready(function(){
     $("#start").click(function(){
         $("#start").remove();
         game.start();
-        setInterval(function(){
-            if(!paused){
-                game.clear();
-                game.generateEnemies();
-                game.update();
-                game.draw();
-            } else{
-                game.clear();
-                game.drawPaused();
-            }
-        }, 30);
+        game.draw();
+        setTimeout(run, 1000);
+        function run(){
+            setInterval(function(){
+                if(!paused){
+                    game.clear();
+                    game.generateEnemies();
+                    game.update();
+                    game.draw();
+                } else{
+                    game.clear();
+                    game.drawPaused();
+                }
+            }, 30);
+        }
     });
 });
