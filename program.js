@@ -80,17 +80,36 @@ $(document).ready(function(){
         guy.buttons = buttonManager;
         guy.maxSpeed = 10;
         guy.updateSpeeds = function(){
+            var idlex = true;
+            var idley = true;
             if(this.buttons.pressed[0] && this.xSpeed > this.maxSpeed * -1){
                 this.xSpeed--;
+                idlex = false;
             }
             if(this.buttons.pressed[1] && this.ySpeed > this.maxSpeed * -1){
                 this.ySpeed--;
+                idley = false;
             }
             if(this.buttons.pressed[2] && this.xSpeed < this.maxSpeed){
                 this.xSpeed++;
+                idlex = false;
             }
             if(this.buttons.pressed[3] && this.ySpeed < this.maxSpeed){
-                this.ySpeed++;;
+                this.ySpeed++;
+                idley = false;
+            }
+            //if no buttons pressed, slow down
+            if(idlex){
+                if(this.xSpeed > 0)
+                    this.xSpeed --;
+                else if(this.xSpeed < 0)
+                    this.xSpeed ++;
+            }
+            if(idley){
+                if(this.ySpeed > 0)
+                    this.ySpeed --;
+                else if(this.ySpeed < 0)
+                    this.ySpeed ++;
             }
         }
         return guy;
