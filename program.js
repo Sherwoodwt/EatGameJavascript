@@ -49,11 +49,16 @@ $(document).ready(function(){
         this.update = function(){
             this.x += this.xSpeed;
             if(this.x > game.canvas.width){
-                this.x = 0 - this.width;
-            } else if(this.x < game.canvas.width - this.width){
+                this.x = 0;
+            } else if(this.x < 0){
                 this.x = game.canvas.width;
             }
             this.y += this.ySpeed;
+            if(this.y > game.canvas.height){
+                this.y = 0;
+            } else if(this.y < 0){
+                this.y = game.canvas.height;
+            }
         }
         this.draw = function(context){
             context.fillStyle = this.color;
