@@ -21,6 +21,7 @@ $(document).ready(function(){
     var game = {
         canvas: document.createElement("canvas"),
         guy: createPlayer(),
+        enemies: [],
         start: function(){
             this.canvas.width = 500;
             this.canvas.height = 500;
@@ -33,14 +34,45 @@ $(document).ready(function(){
         update: function(){
             this.guy.updateSpeeds();
             this.guy.update();
+            var en = this.enemies;
+            for(var i = 0; i < en.length; i++){
+                en[i].update();
+                //en[i].checkCollide();
+            }
         },
         draw: function(){
             this.guy.draw(this.context);
+            var en = this.enemies;
+            for(var i = 0; i < en.length; i++){
+                en[i].draw(this.context);
+            }
         },
         drawPaused: function(){
             this.context.font = "30px Ariel";
-            this.context.color = "#ffffff";
+            this.context.fillStyle = "#ffffff";
             this.context.fillText("PAUSED", 200, 200);
+        },
+        generateEnemies: function(){
+            if(this.enemies.length < 10){
+                var side = Math.floor(Math.random() * 4);
+                var position = Math.floor(Math.random() * this.canvas.width);
+                var size = Math.floor(Math.random() * 42 + 8);
+                var speed = Math.floor(Math.random() * 9 + 1);
+                switch(side){
+                    case 0:
+                        this.enemies[this.enemies.length] = new Person(0, position, size, speed, 0, "#00ff00");
+                        break;
+                    case 1:
+                        this.enemies[this.enemies.length] = new Person(position, 0, size, 0, speed, "#00ff00");
+                        break;
+                    case 2:
+                        this.enemies[this.enemies.length] = new Person(this.canvas.width, position, size, speed * -1, 0, "#00ff00");
+                        break;
+                    case 3:
+                        this.enemies[this.enemies.length] = new Person(position, this.canvas.height, size, 0, speed * -1, "#00ff00");
+                        break;
+                }
+            }
         }
     };
     
@@ -130,6 +162,7 @@ $(document).ready(function(){
         setInterval(function(){
             if(!paused){
                 game.clear();
+                game.generateEnemies();
                 game.update();
                 game.draw();
             } else{
