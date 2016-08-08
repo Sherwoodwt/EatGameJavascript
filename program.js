@@ -1,6 +1,7 @@
 $(document).ready(function(){
     var paused = false;
     var mode = 1;
+    var intervalID = null;
 
     //Key Handling
     var buttonManager = {
@@ -119,6 +120,11 @@ $(document).ready(function(){
                         break;
                 }
             }
+        },
+        reset: function(){
+            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.guy = createPlayer();
+            this.enemies = [];
         }
     };
 
@@ -243,27 +249,14 @@ $(document).ready(function(){
         return guy;
     }
 
-    $("#start").click(function(){
-        $("#start").remove();
-        $("#one").remove();
-        $("#two").remove();
-        game.start();
-        game.draw();
-        setTimeout(run, 1000);
-        function run(){
-            setInterval(function(){
-                if(!paused){
-                    game.clear();
-                    game.generateEnemies();
-                    game.update();
-                    game.draw();
-                } else{
-                    game.clear();
-                    game.drawPaused();
-                }
-            }, 30);
-        }
-    });
+    
+    function reset(){
+        game.reset();
+        $("#start").show();
+        $("#one").show();
+        $("#two").show();
+        $("canvas").hide();
+    }
 
     $("#one").click(function(){
         $(this).addClass("selected");
@@ -275,5 +268,36 @@ $(document).ready(function(){
         $(this).addClass("selected");
         $("#one").removeClass("selected");
         mode = 2;
+    });
+
+    $("#start").click(function(){
+        $("canvas").show();
+        $("#start").hide();
+        $("#one").hide();
+        $("#two").hide();
+        game.start();
+        game.draw();
+        setTimeout(run, 1000);
+        function run(){
+            var count = 0;
+            intervalID = setInterval(function(){
+                if(!paused){
+                    game.clear();
+                    game.generateEnemies();
+                    game.update();
+                    game.draw();
+                    if(!game.guy.alive){
+                        count += 30;
+                    }
+                    if(count > 1000){
+                        clearInterval(intervalID);
+                        reset();
+                    }
+                } else{
+                    game.clear();
+                    game.drawPaused();
+                }
+            }, 30);
+        }
     });
 });
