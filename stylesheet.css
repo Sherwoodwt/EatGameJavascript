@@ -26,3 +26,18 @@ button:hover{
     color: #999999;
     border-color: #999999;
 }
+
+#modeButtons{
+    text-align: center;
+}
+
+.mode{
+    margin-top: 10px;
+    display: inline-block;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.selected{
+    background-color: #222222;
+}

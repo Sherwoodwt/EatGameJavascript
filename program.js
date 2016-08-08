@@ -1,17 +1,52 @@
 $(document).ready(function(){
     var paused = false;
+    var mode = 1;
 
     //Key Handling
     var buttonManager = {
         pressed: [false, false, false, false],
         press: function(key){
-            if(key >= 37 && key <= 40){
-                this.pressed[key-37] = true;
+            if(mode === 1){
+                if(key >= 37 && key <= 40){
+                    this.pressed[key-37] = true;
+                }
+            } else if(mode === 2){
+                switch(key){
+                    case 65:
+                        this.pressed[0] = true;
+                        break;
+                    case 87:
+                        this.pressed[1] = true;
+                        break;
+                    case 68:
+                        this.pressed[2] = true;
+                        break;
+                    case 83:
+                        this.pressed[3] = true;
+                        break;
+                }
             }
         },
         release: function(key){
-            if(key >= 37 && key <= 40){
-                this.pressed[key-37] = false;
+            if(mode === 1){
+                if(key >= 37 && key <= 40){
+                    this.pressed[key-37] = false;
+                }
+            } else if(mode === 2){
+                switch(key){
+                    case 65:
+                        this.pressed[0] = false;
+                        break;
+                    case 87:
+                        this.pressed[1] = false;
+                        break;
+                    case 68:
+                        this.pressed[2] = false;
+                        break;
+                    case 83:
+                        this.pressed[3] = false;
+                        break;
+                }
             }
         }
     };
@@ -210,6 +245,8 @@ $(document).ready(function(){
 
     $("#start").click(function(){
         $("#start").remove();
+        $("#one").remove();
+        $("#two").remove();
         game.start();
         game.draw();
         setTimeout(run, 1000);
@@ -226,5 +263,17 @@ $(document).ready(function(){
                 }
             }, 30);
         }
+    });
+
+    $("#one").click(function(){
+        $(this).addClass("selected");
+        $("#two").removeClass("selected");
+        mode = 1;
+    });
+
+    $("#two").click(function(){
+        $(this).addClass("selected");
+        $("#one").removeClass("selected");
+        mode = 2;
     });
 });
